@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "828906316099",
+    "firebase_url": "https://lab4-93e1c.firebaseio.com",
+    "project_id": "lab4-93e1c",
+    "storage_bucket": "lab4-93e1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:828906316099:android:b255afea5c154e4d",
+        "android_client_info": {
+          "package_name": "com.example.ganhong.photos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "828906316099-r42njb6c08o2bm9fjosv0a67ahdqtam6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWfDIuT9L_aQbLxalL-JwBKAiz1av-TD4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

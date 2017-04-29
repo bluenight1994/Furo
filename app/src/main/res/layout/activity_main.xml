@@ -6,13 +6,38 @@
     android:layout_height="match_parent"
     tools:context="com.example.ganhong.photos.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical = "true"
+        android:orientation="vertical"
+        android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
+
+
+        <EditText
+            android:inputType="textEmailAddress"
+            android:hint="Enter your email"
+            android:id="@+id/editTextEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:inputType="textPassword"
+            android:hint="Enter your password"
+            android:id="@+id/editTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_margin="15dp"
+            android:id="@+id/buttonSignIn"
+            android:text="Launch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
