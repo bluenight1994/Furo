@@ -4,11 +4,32 @@
     android:id="@+id/activity_show_images"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    
+    <LinearLayout
+        android:id="@+id/jjjj"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <Button
+            android:id="@+id/publicButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="public" />
+        
+        <Button
+            android:id="@+id/privateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="private"/>
+        
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/jjjj">
 
     </android.support.v7.widget.RecyclerView>
 

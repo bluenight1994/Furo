@@ -49,6 +49,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
     private Uri filePath;
 
+    private String uid;
     private StorageReference storageReference;
     private DatabaseReference mDatabase;
 
@@ -79,6 +80,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
+            uid = user.getUid();
             storageReference = FirebaseStorage.getInstance().getReference();
             mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS + "/" + user.getUid());
         } else {
@@ -152,11 +154,18 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                             //displaying success toast
                             Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
 
+                            if (!mySwitch.isChecked()) {
+                                // upload in public mode
+                                mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS + "/" + uid);
+                            } else {
+                                // upload in private mode
+                                mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS + "/" + "public");
+                            }
+
                             //creating the upload object to store uploaded image details
                             Upload upload = new Upload(editTextName.getText().toString().trim(),
                                                         taskSnapshot.getDownloadUrl().toString(),
-                                                        description.getText().toString().trim(),
-                                                        mySwitch.isChecked());
+                                                        description.getText().toString().trim());
 
                             //adding an upload to firebase database
                             String uploadId = mDatabase.push().getKey();

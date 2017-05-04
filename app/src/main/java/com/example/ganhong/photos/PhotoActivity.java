@@ -1,11 +1,14 @@
 package com.example.ganhong.photos;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Switch;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,7 +26,7 @@ import java.util.List;
 
 import static com.example.ganhong.photos.R.id.mySwitch;
 
-public class PhotoActivity extends Activity {
+public class PhotoActivity extends Activity implements View.OnClickListener {
 
     //recyclerview object
     private RecyclerView recyclerView;
@@ -40,6 +43,11 @@ public class PhotoActivity extends Activity {
     //list to hold all the uploaded images
     private List<Upload> uploads;
 
+    private Button privateButton;
+    private Button publicButton;
+
+    private boolean publicViewMode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +58,8 @@ public class PhotoActivity extends Activity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        privateButton = (Button) findViewById(R.id.privateButton);
+        publicButton = (Button) findViewById(R.id.publicButton);
 
         progressDialog = new ProgressDialog(this);
 
@@ -62,8 +72,12 @@ public class PhotoActivity extends Activity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
+        privateButton.setOnClickListener(this);
+        publicButton.setOnClickListener(this);
+
+        // default one to be changed
         mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS + "/"
-                                                                + user.getUid());
+                                                                + "public");
 
         //adding an event listener to fetch values
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -91,6 +105,64 @@ public class PhotoActivity extends Activity {
         });
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view == privateButton) {
+            publicViewMode = false;
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            FirebaseUser user = mAuth.getCurrentUser();
+            mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS + "/"
+                    + user.getUid());
 
+            mDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    //dismissing the progress dialog
 
+                    uploads.clear();
+
+                    //iterating through all the values in database
+                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                        Upload upload = postSnapshot.getValue(Upload.class);
+                        uploads.add(upload);
+                    }
+
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        } else if (view == publicButton){
+            publicViewMode = true;
+            mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS + "/"
+                    + "public");
+
+            mDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    //dismissing the progress dialog
+
+                    uploads.clear();
+
+                    //iterating through all the values in database
+                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                        Upload upload = postSnapshot.getValue(Upload.class);
+                        uploads.add(upload);
+                    }
+
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        } else {
+            // do nothing
+        }
+    }
 }
