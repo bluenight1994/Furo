@@ -20,7 +20,8 @@
         <activity
             android:name=".PhotoActivity"
             android:label="@string/title_activity_photo" />
-        <activity android:name=".UploadActivity"></activity>
+        <activity android:name=".UploadActivity" />
+        <activity android:name=".SearchActivity"></activity>
     </application>
 
 </manifest>

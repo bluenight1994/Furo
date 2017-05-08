@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,7 +28,7 @@ import java.util.List;
 
 import static com.example.ganhong.photos.R.id.mySwitch;
 
-public class PhotoActivity extends Activity implements View.OnClickListener {
+public class PhotoActivity extends AppCompatActivity implements View.OnClickListener {
 
     //recyclerview object
     private RecyclerView recyclerView;
@@ -45,6 +47,8 @@ public class PhotoActivity extends Activity implements View.OnClickListener {
 
     private Button privateButton;
     private Button publicButton;
+    private Button uploadButton;
+    private Button searchButton;
 
     private boolean publicViewMode;
 
@@ -60,6 +64,8 @@ public class PhotoActivity extends Activity implements View.OnClickListener {
 
         privateButton = (Button) findViewById(R.id.privateButton);
         publicButton = (Button) findViewById(R.id.publicButton);
+        uploadButton = (Button) findViewById(R.id.uploadButton);
+        searchButton = (Button) findViewById(R.id.searchButton);
 
         progressDialog = new ProgressDialog(this);
 
@@ -74,10 +80,11 @@ public class PhotoActivity extends Activity implements View.OnClickListener {
 
         privateButton.setOnClickListener(this);
         publicButton.setOnClickListener(this);
+        uploadButton.setOnClickListener(this);
+        searchButton.setOnClickListener(this);
 
         // default one to be changed
-        mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS + "/"
-                                                                + "public");
+        mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS_PUBLIC + "/");
 
         //adding an event listener to fetch values
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -111,7 +118,13 @@ public class PhotoActivity extends Activity implements View.OnClickListener {
             publicViewMode = false;
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             FirebaseUser user = mAuth.getCurrentUser();
-            mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS + "/"
+
+            if (user == null) {
+                Toast.makeText(getApplicationContext(), "You are currently viewing as guest, Please Sign In!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS_PRIVATE + "/"
                     + user.getUid());
 
             mDatabase.addValueEventListener(new ValueEventListener() {
@@ -138,8 +151,7 @@ public class PhotoActivity extends Activity implements View.OnClickListener {
 
         } else if (view == publicButton){
             publicViewMode = true;
-            mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS + "/"
-                    + "public");
+            mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS_PUBLIC + "/");
 
             mDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -161,6 +173,12 @@ public class PhotoActivity extends Activity implements View.OnClickListener {
                 public void onCancelled(DatabaseError databaseError) {
                 }
             });
+        } else if (view == uploadButton){
+            Intent intent = new Intent(this, UploadActivity.class);
+            startActivity(intent);
+        } else if (view == searchButton) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
         } else {
             // do nothing
         }

@@ -86,6 +86,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         } else {
             // exit this activity
             // only authenticated user can log in
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -156,10 +158,10 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
                             if (!mySwitch.isChecked()) {
                                 // upload in public mode
-                                mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS + "/" + uid);
+                                mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS_PRIVATE + "/" + uid);
                             } else {
                                 // upload in private mode
-                                mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS + "/" + "public");
+                                mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS_PUBLIC);
                             }
 
                             //creating the upload object to store uploaded image details

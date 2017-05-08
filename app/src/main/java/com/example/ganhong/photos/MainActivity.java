@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonGuest.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -138,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         progressDialog.dismiss();
                         if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Sign In Success!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
+                            startActivity(intent);
                         } else {
                             Toast.makeText(getApplicationContext(), "Sign In Failure!", Toast.LENGTH_SHORT).show();
                         }
