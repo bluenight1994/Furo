@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (view == buttonSignUp){
             signUp();
         } else {
+            mAuth = FirebaseAuth.getInstance();
+            mAuth.signOut();
             Intent intent = new Intent(this, PhotoActivity.class);
             startActivity(intent);
         }

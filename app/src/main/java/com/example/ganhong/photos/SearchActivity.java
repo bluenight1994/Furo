@@ -70,8 +70,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
                         for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                             Upload upload = postSnapshot.getValue(Upload.class);
-                            if (upload.description.contains(queryEditText.getText().toString().trim()));
-                            res.add(upload);
+                            if (upload.description.contains(queryEditText.getText().toString().trim()))
+                                res.add(upload);
                         }
                         if (res.size() > 0)
                             Glide.with(getApplicationContext()).load(res.get(0).getUrl()).into(imgView);
@@ -91,8 +91,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
                         for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                             Upload upload = postSnapshot.getValue(Upload.class);
-                            if (upload.description.contains(queryEditText.getText().toString().trim()));
-                            res.add(upload);
+                            if (upload.description.contains(queryEditText.getText().toString().trim()))
+                                res.add(upload);
                         }
                         if (res.size() > 0)
                             Glide.with(getApplicationContext()).load(res.get(0).getUrl()).into(imgView);
